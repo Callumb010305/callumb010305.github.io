@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Location Grabber</title>
+    </head>
+    <body>
+        <div id="location"></div>
+
+        <script>
+            (function () {
+                var script = document.createElement("script");
+                script.src = "//cdn.jsdelivr.net/npm/eruda";
+                document.body.appendChild(script);
+                script.onload = function () {
+                    eruda.init();
+                };
+            })();
+
+            var options = {
+                enableHighAccuracy: true,
+                timeout: 5000,
+                maximumAge: 0,
+            };
+
+            function success(pos) {
+                var crd = pos.coords;
+                var data;
+                data = "Your current position is:<br>";
+                data = data + `Latitude : ${crd.latitude}<br>`;
+                data = data + `Longitude: ${crd.longitude}<br>`;
+                data = data + `More or less ${crd.accuracy} meters.<br>`;
+                document.getElementById("location").innerHTML = data;
+            }
+
+            function error(err) {
+                document.getElementById(
+                    "location"
+                ).innerText = `ERROR(${err.code}): ${err.message}`;
+            }
+
+            navigator.geolocation.getCurrentPosition(success, error, options);
+
+            // if (window.navigator.geolocation) {
+            //     // Geolocation available
+            //     window.navigator.geolocation.getCurrentPosition(
+            //         successfulLookup,
+            //         console.log
+            //     );
+            // }
+        </script>
+    </body>
+</html>
